@@ -9,64 +9,58 @@ const program = new Command();
 
 program
   .name('podcast-manager')
-  .description('Profesjonell verktøy for nedlasting og transkribering av podcaster')
-  .version('0.1.0');
+  .description('Universal tool for downloading and transcribing podcasts from any RSS feed')
+  .version('0.2.0');
 
-// Download command
+// Download command - main command for any podcast
 program
   .command('download')
-  .description('Last ned podcaster fra RSS feed')
-  .option('-r, --rss <url>', 'RSS feed URL')
-  .option('-e, --episode <number>', 'Spesifikk episode nummer')
-  .option('-l, --latest [count]', 'Last ned de N nyeste episodene (default: 1)', '1')
-  .option('-o, --output <path>', 'Output mappe', './downloads')
+  .description('Download episodes from any podcast RSS feed')
+  .requiredOption('-r, --rss <url>', 'RSS feed URL for the podcast')
+  .option('-e, --episode <number>', 'Specific episode number or ID')
+  .option('-l, --latest [count]', 'Download the N latest episodes (default: 1)', '1')
+  .option('-o, --output <path>', 'Output folder', './downloads')
+  .option('--range <start-end>', 'Download episodes in a range (e.g. 1-10)')
+  .option('--title <pattern>', 'Download episodes matching title (regex supported)')
   .action(downloadCommand);
 
-// List command
+// List command - inspect any feed
 program
   .command('list')
-  .description('List episoder fra RSS feed')
-  .option('-r, --rss <url>', 'RSS feed URL')
-  .option('-c, --count <number>', 'Antall episoder å vise', '10')
+  .description('List episodes from RSS feed to explore content')
+  .requiredOption('-r, --rss <url>', 'RSS feed URL')
+  .option('-c, --count <number>', 'Number of episodes to show', '10')
+  .option('--format', 'Show detailed RSS format information')
   .action(listCommand);
 
 // Transcribe command
 program
   .command('transcribe')
-  .description('Transkriber nedlastede podcast-episoder')
-  .option('-i, --input <path>', 'Input fil eller mappe')
-  .option('-o, --output <path>', 'Output mappe for transkripsjon', './transcripts')
+  .description('Transcribe downloaded podcast episodes')
+  .option('-i, --input <path>', 'Input file or folder')
+  .option('-o, --output <path>', 'Output folder for transcription', './transcripts')
   .action(transcribeCommand);
 
-// Preset commands for known podcasts
+// Info command - analyze RSS feed structure
 program
-  .command('tid-er-penger')
-  .description('Last ned fra Tid er Penger podcast')
-  .option('-e, --episode <number>', 'Episode nummer')
-  .option('-l, --latest [count]', 'Nyeste episoder', '1')
+  .command('info')
+  .description('Analyze RSS feed structure and metadata')
+  .requiredOption('-r, --rss <url>', 'RSS feed URL')
   .action(async (options) => {
-    console.log(chalk.blue('📻 Laster ned fra Tid er Penger...'));
-    await downloadCommand({
-      rss: 'https://feeds.acast.com/public/shows/659c418069d2da0016ac759b',
-      ...options
-    });
-  });
-
-program
-  .command('paradigmepodden')
-  .description('Last ned fra Paradigmepodden')
-  .option('-e, --episode <number>', 'Episode nummer')
-  .option('-l, --latest [count]', 'Nyeste episoder', '1')
-  .action(async (options) => {
-    console.log(chalk.blue('📻 Laster ned fra Paradigmepodden...'));
-    await downloadCommand({
-      rss: 'https://feeds.acast.com/public/shows/6310559b290e6d00127e144f',
-      ...options
-    });
+    console.log(chalk.blue('🔍 Analyzing RSS feed structure...'));
+    // This will be implemented to help debug different RSS formats
+    const { analyzeRssFeed } = await import('./commands/analyze');
+    await analyzeRssFeed(options);
   });
 
 export function main() {
-  program.parse();
+  if (process.argv.length === 2) {
+    console.log(chalk.blue('🎙️  Podcast Manager - Universal podcast tool'));
+    console.log(chalk.gray('   Supports all podcasts with RSS feeds\n'));
+    program.help();
+  } else {
+    program.parse();
+  }
 }
 
 // Only run if this file is executed directly

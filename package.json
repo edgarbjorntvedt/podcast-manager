@@ -1,7 +1,7 @@
 {
   "name": "podcast-manager",
-  "version": "0.1.0",
-  "description": "Profesjonell verktøy for nedlasting og transkribering av podcaster med RSS feed støtte og Whisper AI integrasjon",
+  "version": "0.2.0",
+  "description": "Professional tool for downloading and transcribing podcasts with RSS feed support and Whisper AI integration",
   "main": "dist/index.js",
   "scripts": {
     "start": "node dist/index.js",

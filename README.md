@@ -1,138 +1,181 @@
-# 🎙️ Podcast Manager
+# Podcast Manager
 
-Profesjonell verktøy for nedlasting og transkribering av podcaster med RSS feed støtte og Whisper AI integrasjon.
+A powerful, universal tool for downloading and transcribing podcasts from any RSS feed. Supports all podcast platforms and automatically adapts to different RSS formats.
 
 ## ✨ Features
 
-- 📻 **RSS Feed Support**: Last ned fra alle podcaster med RSS feeds
-- 🎯 **Smart Episode Selection**: Spesifikke episoder eller nyeste episoder
-- 🎤 **AI Transkribering**: Automatisk transkribering med Whisper AI
-- 🚀 **Built-in Presets**: Ferdigkonfigurerte commands for populære podcaster
-- 📊 **Progress Tracking**: Visuell nedlasting-progress
-- 🔧 **TypeScript**: Type-sikker og moderne kodeutvikling
+- **Universal RSS support** - Works with all podcasts that have RSS feeds
+- **Intelligent RSS parsing** - Automatically adapts to different feed formats
+- **Advanced episode search** - Supports numbers, ranges, and title matching
+- **RSS analysis tools** - Analyze feed structures for debugging
+- **Smart audio detection** - Finds audio sources from multiple sources with prioritization
+- **Platform detection** - Automatically detects Spotify, Apple Podcasts, Megaphone, Acast, and more
+- **Complete internationalization** - English interface for global accessibility
 
-## 🚀 Quick Start
-
-```bash
-# Installer
-npm install -g podcast-manager
-
-# List episoder
-podcast-manager list --rss "https://feeds.example.com/podcast" --count 10
-
-# Last ned nyeste episode
-podcast-manager download --rss "https://feeds.example.com/podcast" --latest 1
-
-# Last ned spesifikk episode
-podcast-manager download --rss "https://feeds.example.com/podcast" --episode 123
-
-# Transkriber lydfiler
-podcast-manager transcribe --input ./downloads --output ./transcripts
-```
-
-## 📻 Built-in Podcast Presets
-
-### Tid er Penger (Peter Warren)
-```bash
-# List episoder
-podcast-manager list --rss "https://feeds.acast.com/public/shows/659c418069d2da0016ac759b"
-
-# Last ned nyeste episode
-podcast-manager tid-er-penger --latest 1
-
-# Last ned spesifikk episode
-podcast-manager tid-er-penger --episode 327
-```
-
-### Paradigmepodden
-```bash
-# Last ned fra Paradigmepodden
-podcast-manager paradigmepodden --latest 3
-```
-
-## 📋 Commands
-
-### `download`
-Last ned podcaster fra RSS feed
-```bash
-podcast-manager download [options]
-
-Options:
-  -r, --rss <url>        RSS feed URL
-  -e, --episode <number> Spesifikk episode nummer
-  -l, --latest [count]   Last ned de N nyeste episodene (default: 1)
-  -o, --output <path>    Output mappe (default: ./downloads)
-```
-
-### `list`
-List episoder fra RSS feed
-```bash
-podcast-manager list [options]
-
-Options:
-  -r, --rss <url>       RSS feed URL
-  -c, --count <number>  Antall episoder å vise (default: 10)
-```
-
-### `transcribe`
-Transkriber nedlastede podcast-episoder med Whisper AI
-```bash
-podcast-manager transcribe [options]
-
-Options:
-  -i, --input <path>   Input fil eller mappe
-  -o, --output <path>  Output mappe for transkripsjon (default: ./transcripts)
-```
-
-## 🛠️ Installation
-
-### Prerequisites
-- Node.js (v18 or higher)
-- Python 3.7+ (for Whisper transcription)
-- FFmpeg (for audio processing)
-
-### Install Dependencies
+## 🚀 Installation
 
 ```bash
-# Install Node.js dependencies
-npm install
-
-# Install Whisper (for transcription)
-pip install openai-whisper
-
-# Install FFmpeg (Ubuntu/Debian)
-sudo apt update && sudo apt install ffmpeg
-
-# Install FFmpeg (macOS)
-brew install ffmpeg
-```
-
-### Build from Source
-
-```bash
-git clone https://github.com/username/podcast-manager.git
+# Clone repository
+git clone https://github.com/edgarbjorntvedt/podcast-manager
 cd podcast-manager
+
+# Install dependencies
 npm install
+
+# Build project
 npm run build
-npm link  # Makes 'podcast-manager' available globally
+
+# Optional: Install globally
+npm install -g .
 ```
 
-## 📁 Project Structure
+## 📖 Usage
+
+### Basic Commands
+
+```bash
+# Show help
+podcast-manager --help
+
+# List episodes from a podcast
+podcast-manager list -r <RSS_URL>
+
+# Download latest episode
+podcast-manager download -r <RSS_URL>
+
+# Analyze RSS feed structure
+podcast-manager info -r <RSS_URL>
+```
+
+### Examples with Popular Podcasts
+
+```bash
+# Joe Rogan Experience
+podcast-manager list -r https://feeds.megaphone.fm/GLT1412515089
+
+# Tim Ferriss Show
+podcast-manager download -r https://rss.art19.com/tim-ferriss-show --latest 3
+
+# Any podcast with RSS feed
+podcast-manager info -r https://feeds.acast.com/public/shows/659c418069d2da0016ac759b
+```
+
+## 🔧 Commands
+
+### `list` - Explore podcast content
+
+```bash
+# List 10 latest episodes
+podcast-manager list -r <RSS_URL>
+
+# List 20 episodes
+podcast-manager list -r <RSS_URL> -c 20
+
+# Show detailed RSS format information
+podcast-manager list -r <RSS_URL> --format
+```
+
+### `download` - Download episodes
+
+```bash
+# Download latest episode
+podcast-manager download -r <RSS_URL>
+
+# Download 5 latest episodes
+podcast-manager download -r <RSS_URL> --latest 5
+
+# Download specific episode
+podcast-manager download -r <RSS_URL> --episode 123
+
+# Download episode range
+podcast-manager download -r <RSS_URL> --range 1-10
+
+# Download episodes matching title (regex supported)
+podcast-manager download -r <RSS_URL> --title "interview.*elon"
+
+# Specify output folder
+podcast-manager download -r <RSS_URL> -o ./my-podcasts
+```
+
+### `info` - Analyze RSS structure
+
+```bash
+# Analyze RSS feed for debugging
+podcast-manager info -r <RSS_URL>
+```
+
+### `transcribe` - Transcribe episodes
+
+```bash
+# Transcribe downloaded files
+podcast-manager transcribe -i ./downloads -o ./transcripts
+```
+
+## 🎯 Platform Support
+
+The tool automatically supports various RSS formats and platforms:
+
+### Supported Platforms
+- **Spotify** (anchor.fm feeds)
+- **Apple Podcasts** 
+- **Megaphone**
+- **Libsyn**
+- **Buzzsprout**
+- **Acast**
+- **Art19**
+- **PodBean**
+- **All others** with standard RSS 2.0 feeds
+
+### Audio Source Detection
+The tool intelligently finds audio files using prioritized detection:
+
+1. **Standard enclosure** - Most reliable RSS method
+2. **Multiple enclosures** - With audio type preference
+3. **Media content** - media:content tags
+4. **GUID URLs** - Direct audio links
+5. **Content parsing** - Extract from description/content
+6. **Episode links** - Fallback solution
+
+### Episode Identification
+Multiple methods to find and identify episodes:
+- iTunes episode tags (`itunes:episode`)
+- Custom episode fields
+- Title pattern matching (`Episode 123`, `Ep. 123`, `#123`)
+- GUID pattern matching
+
+## 🔍 Debugging
+
+To troubleshoot RSS feeds that don't work:
+
+```bash
+# Set DEBUG environment variable
+DEBUG=1 podcast-manager info -r <RSS_URL>
+
+# Show detailed format information
+podcast-manager list -r <RSS_URL> --format
+```
+
+This will show:
+- All available fields in the RSS feed
+- Audio sources found and their priority
+- Episode numbering methods detected
+- Platform detection results
+
+## 📁 File Structure
 
 ```
-podcast-manager/
-├── src/
-│   ├── commands/           # CLI commands
-│   │   ├── download.ts    # Download functionality
-│   │   ├── list.ts        # List episodes
-│   │   └── transcribe.ts  # Whisper integration
-│   └── index.ts           # Main CLI entry point
-├── downloads/             # Default download directory
-├── transcripts/           # Default transcription output
-└── dist/                  # Compiled JavaScript
+downloads/          # Default download folder
+transcripts/        # Default transcription folder
+src/
+  commands/
+    analyze.ts      # RSS analysis command
+    download.ts     # Download functionality
+    list.ts         # Episode listing
+    transcribe.ts   # Transcription functionality
+  index.ts          # Main program
 ```
 
-## 🔧 Development
+## 🛠 Development
 
 ```bash
 # Development mode
@@ -148,78 +191,24 @@ npm test
 npm run lint
 ```
 
-## 📊 Examples
-
-### Download Latest Episodes
-```bash
-# Single latest episode
-podcast-manager download --rss "https://feeds.example.com/podcast" --latest 1
-
-# Latest 5 episodes
-podcast-manager download --rss "https://feeds.example.com/podcast" --latest 5
-```
-
-### Download Specific Episode
-```bash
-podcast-manager download --rss "https://feeds.example.com/podcast" --episode 142
-```
-
-### Batch Transcription
-```bash
-# Transcribe all MP3 files in downloads folder
-podcast-manager transcribe --input ./downloads --output ./transcripts
-```
-
-### Pipeline: Download + Transcribe
-```bash
-# Download latest episode
-podcast-manager tid-er-penger --latest 1
-
-# Transcribe downloaded files
-podcast-manager transcribe --input ./downloads --output ./transcripts
-```
-
-## 🎯 Supported Formats
-
-### Audio Formats
-- MP3, WAV, M4A, MP4, AAC, FLAC
-
-### Output Formats
-- **Downloads**: MP3 (preserved original format)
-- **Transcriptions**: SRT subtitle files
-
-## ⚙️ Configuration
-
-### Custom Download Directory
-```bash
-podcast-manager download --rss "..." --output "./my-podcasts"
-```
-
-### Transcription Languages
-The tool auto-detects Norwegian by default, but Whisper supports 50+ languages.
-
 ## 🤝 Contributing
 
-1. Fork the repository
-2. Create feature branch: `git checkout -b feature/amazing-feature`
-3. Commit changes: `git commit -m 'Add amazing feature'`
-4. Push to branch: `git push origin feature/amazing-feature`
-5. Open a Pull Request
+If you find a podcast that doesn't work:
+
+1. Run `podcast-manager info -r <RSS_URL>` 
+2. Create an issue with the RSS URL and output
+3. We can add support for that specific format
+
+The tool is designed to be extensible and can easily support new RSS formats as they're encountered.
+
+## 💡 Use Cases
+
+- **Podcast archiving** - Download entire series for offline listening
+- **Content analysis** - Transcribe episodes for research or accessibility
+- **Automation** - Integrate into workflows for automatic episode processing
+- **Cross-platform** - Works with any podcast regardless of hosting platform
+- **Development** - Debug RSS feeds and understand podcast metadata
 
 ## 📝 License
 
-MIT License - see [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- [OpenAI Whisper](https://github.com/openai/whisper) for transcription
-- [rss-parser](https://github.com/rbren/rss-parser) for RSS feed parsing
-- [Commander.js](https://github.com/tj/commander.js) for CLI framework
-
-## 🐛 Issues & Support
-
-Please [open an issue](https://github.com/username/podcast-manager/issues) for bug reports or feature requests.
-
----
-
-**Made with ❤️ for podcast enthusiasts**
+MIT - See [LICENSE](LICENSE) file.
